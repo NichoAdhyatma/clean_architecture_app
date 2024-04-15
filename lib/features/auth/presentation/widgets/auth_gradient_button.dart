@@ -33,7 +33,10 @@ class AuthGradientButton extends StatelessWidget {
         ),
         child: Text(
           label ?? "",
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
     );
