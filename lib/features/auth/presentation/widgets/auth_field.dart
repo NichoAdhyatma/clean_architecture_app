@@ -8,12 +8,14 @@ class AuthField extends StatefulWidget {
     this.hintText,
     this.controller,
     this.obscureText,
+    this.validator,
   });
 
   final String? labelText;
   final String? hintText;
   final TextEditingController? controller;
   final bool? obscureText;
+  final String? Function(String?)? validator;
 
   @override
   State<AuthField> createState() => _AuthFieldState();
@@ -40,10 +42,10 @@ class _AuthFieldState extends State<AuthField> {
               labelText: widget.labelText,
               hintText: widget.hintText,
             ),
-      validator: (String? value) {
+      validator: widget.validator ?? (String? value) {
         if (value!.isEmpty) return "${widget.labelText} is missing";
         return null;
-      },
+      } ,
       obscureText: widget.obscureText != null && !isObscure,
     );
   }

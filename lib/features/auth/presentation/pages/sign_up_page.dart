@@ -1,8 +1,10 @@
-import 'package:blog_app_clean_tdd/core/theme/app_pallete.dart';
-import 'package:blog_app_clean_tdd/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:blog_app_clean_tdd/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/widgets/auth_field.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../widgets/auth_custom_rich_text.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -65,28 +67,24 @@ class _SignUpPageState extends State<SignUpPage> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
-                  const AuthGradientButton(label: "Sign Up"),
+                  AuthGradientButton(
+                    label: "Sign Up",
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        context.read<AuthBloc>().add(
+                              AuthSignUp(
+                                email: emailController.text.trim(),
+                                password: passwordController.text,
+                                name: nameController.text,
+                              ),
+                            );
+                      }
+                    },
+                  ),
                   const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(SignInPage.route()),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Already have an account ? ',
-                        style: Theme.of(context).textTheme.titleMedium,
-                        children: [
-                          TextSpan(
-                            text: 'Sign In',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  color: AppPallete.gradient2,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  const AuthCustomRichText(
+                    firstText: 'Already have an account?',
+                    secondText: 'Sign In',
                   ),
                 ],
               ),
