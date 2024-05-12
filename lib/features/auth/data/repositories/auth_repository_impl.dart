@@ -4,18 +4,36 @@ import 'package:blog_app_clean_tdd/features/auth/data/datasources/auth_remote_da
 import 'package:blog_app_clean_tdd/features/auth/domain/entities/user.dart';
 import 'package:blog_app_clean_tdd/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
 
   AuthRepositoryImpl(this.authRemoteDataSource);
 
+  Future<Either<Failure, User>> _getUser(Future<User> Function() fn) async {
+    try {
+      final user = await fn();
+
+      return right(user);
+    } on sb.AuthException catch (e) {
+      return left(Failure(e.message));
+    } on ServerException catch (e) {
+      return left(Failure(e.message));
+    }
+  }
+
   @override
   Future<Either<Failure, User>> signInWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    throw UnimplementedError();
+  }) async {
+    return _getUser(
+      () async => await authRemoteDataSource.signInWithEmailPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   @override
@@ -24,16 +42,12 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    try {
-      final user = await authRemoteDataSource.signUpWithEmailPassword(
+    return _getUser(
+      () async => await authRemoteDataSource.signUpWithEmailPassword(
         name: name,
         email: email,
         password: password,
-      );
-
-      return right(user);
-    } on ServerException catch (e) {
-      return left(Failure(e.message));
-    }
+      ),
+    );
   }
 }

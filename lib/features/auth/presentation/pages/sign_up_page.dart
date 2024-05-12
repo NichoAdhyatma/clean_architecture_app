@@ -1,12 +1,12 @@
 import 'package:blog_app_clean_tdd/core/common/widgets/loader.dart';
 import 'package:blog_app_clean_tdd/core/utils/show_snackbar.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:blog_app_clean_tdd/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:blog_app_clean_tdd/features/auth/presentation/widgets/auth_custom_rich_text.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/widgets/auth_field.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../widgets/auth_custom_rich_text.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -94,8 +94,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      const AuthCustomRichText(
-                        firstText: 'Already have an account?',
+                      AuthCustomRichText(
+                        onPressed: () => Navigator.of(context).push(
+                          SignInPage.route(),
+                        ),
+                        firstText: 'Already have an account? ',
                         secondText: 'Sign In',
                       ),
                     ],

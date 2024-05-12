@@ -1,22 +1,22 @@
+import 'package:blog_app_clean_tdd/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../core/theme/app_pallete.dart';
-import '../pages/sign_in_page.dart';
 
 class AuthCustomRichText extends StatelessWidget {
   const AuthCustomRichText({
     super.key,
     required this.firstText,
     required this.secondText,
+    required this.onPressed,
   });
 
   final String firstText;
   final String secondText;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(SignInPage.route()),
+      onTap: onPressed,
       child: RichText(
         text: TextSpan(
           text: firstText,
@@ -25,9 +25,9 @@ class AuthCustomRichText extends StatelessWidget {
             TextSpan(
               text: secondText,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppPallete.gradient2,
-                fontWeight: FontWeight.bold,
-              ),
+                    color: AppPallete.gradient2,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ],
         ),
