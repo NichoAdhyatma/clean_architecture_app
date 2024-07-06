@@ -1,3 +1,4 @@
+import 'package:blog_app_clean_tdd/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_app_clean_tdd/core/theme/theme.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/pages/sign_up_page.dart';
@@ -10,18 +11,34 @@ void main() async {
 
   await initDependencies();
 
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(
-        create: (_) => serviceLocator<AuthBloc>(),
-      )
-    ],
-    child: const BlogApp(),
-  ));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => serviceLocator<AppUserCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => serviceLocator<AuthBloc>(),
+        )
+      ],
+      child: const BlogApp(),
+    ),
+  );
 }
 
-class BlogApp extends StatelessWidget {
+class BlogApp extends StatefulWidget {
   const BlogApp({super.key});
+
+  @override
+  State<BlogApp> createState() => _BlogAppState();
+}
+
+class _BlogAppState extends State<BlogApp> {
+  @override
+  void initState() {
+    context.read<AuthBloc>().add(AuthIsUserSignIn());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +46,23 @@ class BlogApp extends StatelessWidget {
       title: 'BlogApp',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkThemeMode,
-      home: const SignUpPage(),
+      darkTheme: AppTheme.darkThemeMode,
+      themeMode: ThemeMode.system,
+      home: BlocSelector<AppUserCubit, AppUserState, bool>(
+        selector: (state) {
+          return state is AppUserSignedIn;
+        },
+        builder: (context, isUserSignIn) {
+          if (isUserSignIn) {
+            return const Scaffold(
+              body: Center(
+                child: Text("User is signed in"),
+              ),
+            );
+          }
+          return const SignUpPage();
+        },
+      ),
     );
   }
 }

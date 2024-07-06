@@ -3,6 +3,8 @@ import 'package:blog_app_clean_tdd/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
+  Session? get currentUserSession;
+
   Future<UserModel> signUpWithEmailPassword({
     required String name,
     required String email,
@@ -13,12 +15,17 @@ abstract interface class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<UserModel?> getCurrentUserData();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final SupabaseClient supabaseClient;
+  final SupabaseClient _supabaseClient;
 
-  AuthRemoteDataSourceImpl(this.supabaseClient);
+  AuthRemoteDataSourceImpl(this._supabaseClient);
+
+  @override
+  Session? get currentUserSession => _supabaseClient.auth.currentSession;
 
   @override
   Future<UserModel> signInWithEmailPassword({
@@ -26,7 +33,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      final response = await supabaseClient.auth.signInWithPassword(
+      final response = await _supabaseClient.auth.signInWithPassword(
         password: password,
         email: email,
       );
@@ -48,7 +55,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      final response = await supabaseClient.auth.signUp(
+      final response = await _supabaseClient.auth.signUp(
         password: password,
         email: email,
         data: {'name': name},
@@ -59,6 +66,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJson(response.user!.toJson());
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel?> getCurrentUserData() async {
+    try {
+      if (currentUserSession != null) {
+        final userData =
+            await _supabaseClient.from('profiles').select('id, name').eq(
+                  'id',
+                  currentUserSession!.user.id,
+                );
+
+        return UserModel.fromJson(userData.first).copyWith(
+          email: currentUserSession!.user.email,
+        );
+      }
+
+      return null;
     } catch (e) {
       throw ServerException(e.toString());
     }

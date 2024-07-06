@@ -42,10 +42,11 @@ class _AuthFieldState extends State<AuthField> {
               labelText: widget.labelText,
               hintText: widget.hintText,
             ),
-      validator: widget.validator ?? (String? value) {
-        if (value!.isEmpty) return "${widget.labelText} is missing";
-        return null;
-      } ,
+      validator: widget.validator ??
+          (String? value) {
+            if (value!.isEmpty) return "${widget.labelText} is missing";
+            return null;
+          },
       obscureText: widget.obscureText != null && !isObscure,
     );
   }

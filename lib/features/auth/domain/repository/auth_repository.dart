@@ -1,4 +1,4 @@
-import 'package:blog_app_clean_tdd/features/auth/domain/entities/user.dart';
+import 'package:blog_app_clean_tdd/core/common/entities/user.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'package:blog_app_clean_tdd/core/error/failures.dart';
@@ -14,4 +14,6 @@ abstract interface class AuthRepository {
     required String email,
     required String password,
   });
+
+  Future<Either<Failure, User>> currentUser();
 }
