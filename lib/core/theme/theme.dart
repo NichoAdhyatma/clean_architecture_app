@@ -22,7 +22,9 @@ class AppTheme {
     bodyMedium: _fredokaFont,
     bodySmall: _fredokaFont,
     displayLarge: _fredokaFont,
-    displayMedium: _fredokaFont.copyWith(fontWeight: FontWeight.w700),
+    displayMedium: _fredokaFont.copyWith(
+      fontWeight: FontWeight.w700,
+    ),
     displaySmall: _fredokaFont,
     titleLarge: _fredokaFont,
     titleMedium: _fredokaFont,
@@ -59,6 +61,12 @@ class AppTheme {
       surfaceTintColor: AppPallete.backgroundColor,
     ),
     textTheme: _textTheme,
+    chipTheme: const ChipThemeData(
+      color: WidgetStatePropertyAll(
+        AppPallete.backgroundColor,
+      ),
+      side: BorderSide.none,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.all(27.0),
       enabledBorder: _inputBorder(),

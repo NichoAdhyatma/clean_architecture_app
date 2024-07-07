@@ -2,6 +2,7 @@ import 'package:blog_app_clean_tdd/core/common/cubits/app_user/app_user_cubit.da
 import 'package:blog_app_clean_tdd/core/theme/theme.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app_clean_tdd/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:blog_app_clean_tdd/features/blog/presentation/pages/blog_page.dart';
 import 'package:blog_app_clean_tdd/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,11 +55,7 @@ class _BlogAppState extends State<BlogApp> {
         },
         builder: (context, isUserSignIn) {
           if (isUserSignIn) {
-            return const Scaffold(
-              body: Center(
-                child: Text("User is signed in"),
-              ),
-            );
+            return const BlogPage();
           }
           return const SignUpPage();
         },
