@@ -1,5 +1,4 @@
 import 'package:blog_app_clean_tdd/core/common/cubits/app_user/app_user_cubit.dart';
-import 'package:blog_app_clean_tdd/core/usecase/usecase.dart';
 import 'package:blog_app_clean_tdd/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:blog_app_clean_tdd/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:blog_app_clean_tdd/features/auth/domain/usecases/current_user.dart';
@@ -9,7 +8,6 @@ import 'package:blog_app_clean_tdd/features/auth/presentation/bloc/auth_bloc.dar
 import 'package:blog_app_clean_tdd/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:blog_app_clean_tdd/features/blog/domain/repositories/blog_repository.dart';
 import 'package:blog_app_clean_tdd/features/blog/presentation/bloc/blog_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -53,23 +51,23 @@ void _initAuth() {
       ),
     )
     // Usecases
-    ..registerFactory<UseCase>(
+    ..registerFactory(
       () => UserSignUp(
         serviceLocator(),
       ),
     )
-    ..registerFactory<UseCase>(
+    ..registerFactory(
       () => UserSignIn(
         serviceLocator(),
       ),
     )
-    ..registerFactory<UseCase>(
+    ..registerFactory(
       () => CurrentUser(
         serviceLocator(),
       ),
     )
     // Bloc
-    ..registerLazySingleton<Bloc>(
+    ..registerLazySingleton(
       () => AuthBloc(
         userSignUp: serviceLocator(),
         userSignIn: serviceLocator(),
@@ -92,12 +90,12 @@ void _initBlog() {
         serviceLocator(),
       ),
     ) // Usecases
-    ..registerFactory<UseCase>(
+    ..registerFactory(
       () => UploadBlog(
         serviceLocator(),
       ),
     ) // Bloc
-    ..registerLazySingleton<Bloc>(
+    ..registerLazySingleton(
       () => BlogBloc(
         serviceLocator(),
       ),

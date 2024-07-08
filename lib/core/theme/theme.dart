@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static _inputBorder({Color borderColor = AppPallete.borderColor}) =>
+  static _inputBorder({
+    Color borderColor = AppPallete.borderColor,
+    double width = 1.0,
+  }) =>
       OutlineInputBorder(
         borderSide: BorderSide(
           color: borderColor,
-          width: 3,
+          width: width,
         ),
         borderRadius: BorderRadius.circular(10),
       );
@@ -69,12 +72,23 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.all(27.0),
+      border: _inputBorder(),
       enabledBorder: _inputBorder(),
-      focusedBorder: _inputBorder(borderColor: AppPallete.gradient2),
-      focusedErrorBorder: _inputBorder(borderColor: AppPallete.errorColor),
-      errorBorder: _inputBorder(borderColor: AppPallete.errorColor),
-      labelStyle:
-          _textTheme.labelMedium?.copyWith(color: AppPallete.whiteColor),
+      focusedBorder: _inputBorder(
+        borderColor: AppPallete.gradient2,
+        width: 2,
+      ),
+      focusedErrorBorder: _inputBorder(
+        borderColor: AppPallete.errorColor,
+        width: 2,
+      ),
+      errorBorder: _inputBorder(
+        borderColor: AppPallete.errorColor,
+        width: 2,
+      ),
+      labelStyle: _textTheme.labelMedium?.copyWith(
+        color: AppPallete.whiteColor,
+      ),
     ),
   );
 }
