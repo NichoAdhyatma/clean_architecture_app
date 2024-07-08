@@ -4,7 +4,7 @@ import 'package:blog_app_clean_tdd/core/usecase/usecase.dart';
 import 'package:blog_app_clean_tdd/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class CurrentUser implements UserCase<User, NoParams> {
+class CurrentUser implements UseCase<User, NoParams> {
   final AuthRepository authRepository;
 
   CurrentUser(this.authRepository);
