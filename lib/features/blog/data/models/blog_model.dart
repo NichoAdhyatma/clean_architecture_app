@@ -9,6 +9,7 @@ class BlogModel extends Blog {
     required super.imageUrl,
     required super.topics,
     required super.updatedAt,
+    super.posterName,
   });
 
   factory BlogModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +20,9 @@ class BlogModel extends Blog {
       content: json['content'],
       imageUrl: json['image_url'],
       topics: List<String>.from(json['topics'] ?? []),
-      updatedAt: json['updated_at'] == null ? DateTime.now() : DateTime.parse(json['updated_at']),
+      updatedAt: json['updated_at'] == null
+          ? DateTime.now()
+          : DateTime.parse(json['updated_at']),
     );
   }
 
@@ -41,6 +44,7 @@ class BlogModel extends Blog {
     String? title,
     String? content,
     String? imageUrl,
+    String? posterName,
     List<String>? topics,
     DateTime? updatedAt,
   }) {
@@ -52,6 +56,7 @@ class BlogModel extends Blog {
       imageUrl: imageUrl ?? this.imageUrl,
       topics: topics ?? this.topics,
       updatedAt: updatedAt ?? this.updatedAt,
+      posterName: posterName ?? this.posterName,
     );
   }
 }
